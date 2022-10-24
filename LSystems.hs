@@ -90,19 +90,19 @@ move _ angle state = error "Invalid Command: has to be L, R, or F"
 -- commands in `cs' and assuming the given angle of rotation.
 --
 help1 :: Commands -> Angle -> Colour -> TurtleState -> (Commands, [ColouredLine])
-help1 [] angle colour state = ("", [])
+help1 [] angle colour state       = ("", [])
 help1 ('[':cs) angle colour state = (restcommands, colouredlines ++ lines)
   where
     (sqcommands, colouredlines) = help1 cs angle colour state
-    (restcommands, lines) = help1 sqcommands angle colour state
+    (restcommands, lines)       = help1 sqcommands angle colour state
 help1 (']':cs) angle colour state = (cs, [])
 help1 (c:cs) angle colour state
   | c == 'F'  = (a, currentLine : b)
   | otherwise = help1 cs angle colour (move c angle state)
   where
-    (a, b) = help1 cs angle colour newState
+    (a, b)          = help1 cs angle colour newState
     newState@(e, f) = move c angle state
-    currentLine = (fst state, e, colour)
+    currentLine     = (fst state, e, colour)
 
 
 trace1 :: Commands -> Angle -> Colour -> [ColouredLine]
@@ -110,11 +110,11 @@ trace1 (c:cs) angle colour
   = snd(help1 (c:cs) angle colour ((0, 0), 90))
 
 help2 :: Commands -> Angle -> Colour -> TurtleState -> Stack -> [ColouredLine]
-help2 [] angle colour state k = []
+help2 [] angle colour state k       = []
 help2 ('F':cs) angle colour state k = (fst state, fst (move 'F' angle state), colour) : help2 cs angle colour (move 'F' angle state) k
 help2 (c:cs) angle colour state k
-  | c == '[' = help2 cs angle colour state (state:k)
-  | c == ']' = help2 cs angle colour (head k) (tail k)
+  | c == '['  = help2 cs angle colour state (state:k)
+  | c == ']'  = help2 cs angle colour (head k) (tail k)
   | otherwise = help2 cs angle colour (move c angle state) k
 
 trace2 :: Commands -> Angle -> Colour -> [ColouredLine]
