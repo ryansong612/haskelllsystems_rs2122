@@ -109,6 +109,7 @@ trace1 :: Commands -> Angle -> Colour -> [ColouredLine]
 trace1 (c:cs) angle colour
   = snd(help1 (c:cs) angle colour ((0, 0), 90))
 
+-- My helper function 2
 help2 :: Commands -> Angle -> Colour -> TurtleState -> Stack -> [ColouredLine]
 help2 [] angle colour state k       = []
 help2 ('F':cs) angle colour state k = (fst state, fst (move 'F' angle state), colour) : help2 cs angle colour (move 'F' angle state) k
