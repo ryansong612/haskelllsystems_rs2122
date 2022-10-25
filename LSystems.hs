@@ -60,7 +60,7 @@ lookupChar c rules = head [snd i | i <- rules, fst i == c]
 
 -- Expand command string s once using rule table r
 expandOne :: String -> Rules -> String
-expandOne "" _ = ""
+expandOne "" _           = ""
 expandOne (ax:axs) rules = lookupChar ax rules ++ expandOne axs rules
 
 {- Another way of defining expandOne is using list comprehension:
@@ -70,15 +70,14 @@ expandOne (ax:axs) rules = lookupChar ax rules ++ expandOne axs rules
 -- Expand command string s n times using rule table r
 expand :: String -> Int -> Rules -> String
 expand axioms 0 rules = axioms
-expand axioms x rules
-  = expand (expandOne axioms rules) (x-1) rules
+expand axioms x rules = expand (expandOne axioms rules) (x-1) rules
 
 
 -- Move a turtle
 move :: Command -> Angle -> TurtleState -> TurtleState
 move 'L' angle (cartesian, orientation) = (cartesian, orientation + angle)
 move 'R' angle (cartesian, orientation) = (cartesian, orientation - angle)
-move 'F' angle ((a, b), orientation) = ((x, y), orientation)
+move 'F' angle ((a, b), orientation)    = ((x, y), orientation)
   where 
     x = a + cos (radians orientation)
     y = b + sin (radians orientation)
@@ -93,8 +92,8 @@ help1 :: Commands -> Angle -> Colour -> TurtleState -> (Commands, [ColouredLine]
 help1 [] angle colour state       = ("", [])
 help1 ('[':cs) angle colour state = (restcommands, colouredlines ++ lines)
   where
-    (sqcommands, colouredlines) = help1 cs angle colour state
-    (restcommands, lines)       = help1 sqcommands angle colour state
+    (commandsbetween, colouredlines) = help1 cs angle colour state
+    (restcommands, lines)       = help1 commandsbetween angle colour state
 help1 (']':cs) angle colour state = (cs, [])
 help1 (c:cs) angle colour state
   | c == 'F'  = (a, currentLine : b)
@@ -112,7 +111,13 @@ trace1 (c:cs) angle colour
 -- My helper function 2
 help2 :: Commands -> Angle -> Colour -> TurtleState -> Stack -> [ColouredLine]
 help2 [] angle colour state k       = []
-help2 ('F':cs) angle colour state k = (fst state, fst (move 'F' angle state), colour) : help2 cs angle colour (move 'F' angle state) k
+help2 ('F':cs) angle colour state k = (state1, fmove1, colour) : help2new
+  where
+    state1   = fst state
+    fmove    = move 'F' angle state
+    fmove1   = fst fmove
+    help2new = help2 cs angle colour fmove k
+
 help2 (c:cs) angle colour state k
   | c == '['  = help2 cs angle colour state (state:k)
   | c == ']'  = help2 cs angle colour (head k) (tail k)
