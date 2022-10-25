@@ -64,12 +64,12 @@ expandOne "" _           = ""
 expandOne (ax:axs) rules = lookupChar ax rules ++ expandOne axs rules
 
 {- Another way of defining expandOne is using list comprehension:
-   expandOne axioms rules = concat [lookupChar i rules | i <- axioms]
-   -}
+expandOne axioms rules = concat [lookupChar i rules | i <- axioms]
+-}
 
 -- Expand command string s n times using rule table r
 expand :: String -> Int -> Rules -> String
-expand axioms 0 rules = axioms
+expand axioms 0 _ = axioms
 expand axioms x rules = expand (expandOne axioms rules) (x-1) rules
 
 
