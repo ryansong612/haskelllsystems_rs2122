@@ -145,12 +145,6 @@ drawLSystem2 :: LSystem -> Int -> Colour -> IO ()
 drawLSystem2 system n colour
   = drawLines (trace2 (expandLSystem system n) (angle system) colour)
 
-
-drawLSystem3 :: LSystem -> Int -> Colour -> IO ()
-drawLSystem3 system n colour
-  = drawLines $ colourChange lines (0,0,0) (length lines) (0,0,1)
-  where
-    lines = trace2 (expandLSystem system n) (angle system) colour
 ----------------------------------------------------------
 -- Functions for extension
 -- changes colours
@@ -165,7 +159,12 @@ colourChange ((v1,v2,_):s) c@(r,g,b) l c'@(r',g',b')
     g'' = (g' - g) * (n / l') + g
     b'' = (b' - b) * (n / l') + b
     c'' = (r'',g'',b'')
-
+-- draws with extension
+drawLSystem3 :: LSystem -> Int -> Colour -> IO ()
+drawLSystem3 system n colour
+  = drawLines $ colourChange lines (0,0,0) (length lines) red
+  where
+    lines = trace2 (expandLSystem system n) (angle system) colour
 ----------------------------------------------------------
 -- Some test systems.
 
