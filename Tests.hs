@@ -11,6 +11,13 @@ angleTestCases
     , (1, "", []) ==> 1
     , triangle    ==> 90
     , arrowHead   ==> 60
+    , peanoGosper ==> 60
+    , dragon      ==> 45
+    , snowflake   ==> 60
+    , tree        ==> 45
+    , bush        ==> 22.5
+    , canopy      ==> 30.0
+    , galaxy      ==> 36.0
     ]
 
 axiomTestCases
@@ -18,16 +25,74 @@ axiomTestCases
     , cross        ==> "M-M-M-M"
     , triangle     ==> "-M"
     , arrowHead    ==> "N"
+    , peanoGosper  ==> "M"
+    , dragon       ==> "MX"
+    , snowflake    ==> "M--M--M"
+    , tree         ==> "M"
+    , bush         ==> "X"
+    , canopy       ==> "M"
+    , galaxy       ==> "[M]++[M]++[M]++[M]++[M]"
     ]
 
 rulesTestCases
-  = [ cross ==> [ ('M', "M-M+M+MM-M-M+M")
-                , ('+', "+")
-                , ('-', "-")
+  = [ cross       ==> [ ('M', "M-M+M+MM-M-M+M")
+                      , ('+', "+")
+                      , ('-', "-")
                 ]
     , (0, "", [ ('M', "N") ])
-        ==> [ ('M', "N") ]
-    ]
+                  ==> [ ('M', "N") ]
+    , triangle    ==> [('M', "M+M-M-M+M")
+                     , ('+', "+")
+                     , ('-', "-")
+                ]
+    , arrowHead   ==> [('M', "N+M+N")
+                     , ('N', "M-N-M")
+                     , ('+', "+") 
+                     , ('-', "-")
+                ]
+    , peanoGosper ==> [('M', "M+N++N-M--MM-N+")
+                     , ('N', "-M+NN++N+M--M-N")
+                     , ('+', "+")
+                     , ('-', "-")
+                ]
+    , dragon      ==> [('M', "A")
+                     , ('X', "+MX--MY+")
+                     , ('Y', "-MX++MY-")
+                     , ('A', "A")
+                     , ('+', "+")
+                     , ('-', "-")
+                ]
+    , snowflake   ==> [('M', "M+M--M+M")
+                     , ('+', "+")
+                     , ('-', "-")
+                ]
+    , tree        ==> [('M', "N[-M][+M][NM]")
+                     , ('N', "NN")
+                     , ('[', "[")
+                     , (']', "]")
+                     , ('+', "+")
+                     , ('-', "-")
+   ]
+    , bush        ==> [('X', "M-[[X]+X]+M[+MX]-X")
+                     , ('M', "MM")
+                     , ('[', "[")
+                     , (']', "]")
+                     , ('+', "+")
+                     , ('-', "-")
+   ]
+    , canopy      ==> [('M', "M[+MM][-MM]M[-M][+M]M")
+                     , ('[', "[")
+                     , (']', "]")
+                     , ('+', "+")
+                     , ('-', "-")
+   ]
+    , galaxy      ==> [('M', "+M--M---M")
+                     , ('[', "[")
+                     , (']', "]")
+                     , ('+', "+")
+                     , ('-', "-")
+   ]
+  ]
 
 {- Note: these test cases use angle/axiom/rules, and will fail the test
  - suite with Argument exceptions until those functions are correctly

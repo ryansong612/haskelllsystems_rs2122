@@ -113,7 +113,7 @@ trace1 (c:cs) angle colour
 -- My helper function 2
 -- Pattern matching
 help2 :: Commands -> Angle -> Colour -> TurtleState -> Stack -> [ColouredLine]
-help2 [] angle colour state stack       = []
+help2 [] _ _ _ _       = []
 help2 ('F':cs) angle colour state stack = (state1, fmove1, colour) : help2new
   where
     state1   = fst state
@@ -125,9 +125,6 @@ help2 (c:cs) angle colour state stack
   | c == '['  = help2 cs angle colour state (state:stack)
   | c == ']'  = help2 cs angle colour (head stack) (tail stack)
   | otherwise = help2 cs angle colour (move c angle state) stack
-
-  
-
 
 trace2 :: Commands -> Angle -> Colour -> [ColouredLine]
 trace2 (c:cs) angle colour
