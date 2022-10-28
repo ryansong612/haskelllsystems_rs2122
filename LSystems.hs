@@ -159,6 +159,7 @@ colourChange ((v1,v2,_):s) c@(r,g,b) l c'@(r',g',b')
     g'' = (g' - g) * (n / l') + g
     b'' = (b' - b) * (n / l') + b
     c'' = (r'',g'',b'')
+
 -- draws with extension
 drawLSystem3 :: LSystem -> Int -> Colour -> IO ()
 drawLSystem3 system n colour
